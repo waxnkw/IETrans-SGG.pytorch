@@ -1,0 +1,38 @@
+# compilation and distribution
+__pycache__
+_ext
+*.pyc
+*.so
+maskrcnn_benchmark.egg-info/
+build/
+dist/
+.pytest_cache
+
+# ipython/jupyter notebooks
+#*.ipynb
+**/.ipynb_checkpoints/
+
+# checkpoint
+checkpoint/
+
+# dataset
+datasets/*
+*.png
+*.jpg
+*.jpeg
+
+# Editor temporaries
+*.swn
+*.swo
+*.swp
+*~
+
+# Pycharm editor settings
+.idea
+
+# vscode editor settings
+.vscode
+
+# MacOS
+.DS_Store
+
