@@ -1,7 +1,6 @@
 # Internal and External Data Transfer (IETrans) for Scene Graph Generation
-**_The problems are data annotation problems._**  
-**_The algorithm is a data modification algorithm._**  
-This is the code for paper "[Fine-Grained Scene Graph Generation with Data Transfer](TODO)".
+
+This is the code for paper "[Fine-Grained Scene Graph Generation with Data Transfer](https://arxiv.org/abs/2203.11654)".
 
 ## Recent Updates
 - [x] 2022.03.19 Initialize VG-50 code.
