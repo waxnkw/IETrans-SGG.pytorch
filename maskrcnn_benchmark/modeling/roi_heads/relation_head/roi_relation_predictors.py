@@ -265,7 +265,8 @@ class MotifPredictor(nn.Module):
         # if self.use_bias:
         #     convey statistics into FrequencyBias to avoid loading again
             # self.freq_bias = FrequencyBias(config, statistics)
-        self.freq_bias = FrequencyBias(config, statistics)
+        if self.train_use_bias or self.predict_use_bias:
+            self.freq_bias = FrequencyBias(config, statistics)
 
     def forward(self, proposals, rel_pair_idxs, rel_labels, rel_binarys, roi_features, union_features, logger=None):
         """
