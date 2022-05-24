@@ -79,7 +79,15 @@ class ROIRelationHead(torch.nn.Module):
             rel_pair_idxs = [t.get_field("relation_pair_idxs") for t in targets]
         elif self.eval_only_acc:
             rel_labels, rel_binarys = None, None
-            rel_pair_idxs = [t.get_field("gt_rel_pair_idxs").long() for t in targets]
+            rel_pair_idxs = []
+            for t in targets:
+                idxs = t.get_field("relation").nonzero()
+                if len(idxs) > 0:
+                    rel_pair_idxs.append(idxs.long())
+                else:
+                    # if there is no candidate pairs, give a placeholder of [[0, 0]]
+                    rel_pair_idxs.append(torch.zeros((1, 2), dtype=torch.int64, device=features[0].device))
+            # rel_pair_idxs = [t.get_field("gt_rel_pair_idxs").long() for t in targets]
         else:
             rel_labels, rel_binarys = None, None
             rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)
