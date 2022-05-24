@@ -821,3 +821,4 @@ _C.IETRANS.RWT = False # use reweight or not
 
 # eval
 _C.TEST.ONLY_ACC = False
+_C.MODEL.ROI_RELATION_HEAD.FAKE_FREQ_BIAS = False

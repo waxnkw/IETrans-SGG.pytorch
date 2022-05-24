@@ -46,7 +46,11 @@ def get_dataset_statistics(cfg):
         factory = getattr(D, data["factory"])
         args = data["args"]
         dataset = factory(**args)
-        statistics.append(dataset.get_statistics())
+        if cfg.MODEL.ROI_RELATION_HEAD.FAKE_FREQ_BIAS:
+            statistics.append(dataset.get_statistics(no_matrix=True))
+        else:
+            statistics.append(dataset.get_statistics())
+        print(statistics[-1]['fg_matrix'])
     logger.info('finish')
 
     assert len(statistics) == 1
