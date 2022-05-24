@@ -51,6 +51,12 @@ def do_vg_evaluation(
         predictions[image_id] = prediction.resize((image_width, image_height))
 
         gt = dataset.get_groundtruth(image_id, evaluation=True)
+        # remove redundant attributes in gts and preds
+        del gt.extra_fields['relation']
+        del gt.extra_fields['attributes']
+        del predictions[image_id].extra_fields['attributes']
+        # del predictions[image_id].extra_fields['pred_rel_labels']
+        del predictions[image_id].extra_fields['predict_logits']
         groundtruths.append(gt)
 
     save_output(output_folder, groundtruths, predictions, dataset)
