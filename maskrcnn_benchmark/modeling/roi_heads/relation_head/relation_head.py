@@ -39,6 +39,7 @@ class ROIRelationHead(torch.nn.Module):
             self.wsup_loss_evaluator = make_weaksup_relation_loss_evaluator(cfg)
 
         self.em_E_step = cfg.EM.MODE == "E"
+        self.eval_only_acc = cfg.TEST.ONLY_ACC
 
         self.loss_evaluator = make_roi_relation_loss_evaluator(cfg)
         self.samp_processor = make_roi_relation_samp_processor(cfg)
@@ -76,6 +77,9 @@ class ROIRelationHead(torch.nn.Module):
         elif self.em_E_step:
             rel_labels, rel_binarys = None, None
             rel_pair_idxs = [t.get_field("relation_pair_idxs") for t in targets]
+        elif self.eval_only_acc:
+            rel_labels, rel_binarys = None, None
+            rel_pair_idxs = [t.get_field("gt_rel_pair_idxs").long() for t in targets]
         else:
             rel_labels, rel_binarys = None, None
             rel_pair_idxs = self.samp_processor.prepare_test_pairs(features[0].device, proposals)

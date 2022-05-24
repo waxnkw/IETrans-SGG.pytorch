@@ -819,3 +819,5 @@ _C.EM.MODE = None
 _C.IETRANS = CN()
 _C.IETRANS.RWT = False # use reweight or not
 
+# eval
+_C.TEST.ONLY_ACC = False
