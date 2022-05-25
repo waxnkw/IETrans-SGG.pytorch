@@ -56,7 +56,7 @@ def do_vg_evaluation(
         del gt.extra_fields['attributes']
         del predictions[image_id].extra_fields['attributes']
         # del predictions[image_id].extra_fields['pred_rel_labels']
-        del predictions[image_id].extra_fields['predict_logits']
+        # del predictions[image_id].extra_fields['predict_logits']
         groundtruths.append(gt)
 
     save_output(output_folder, groundtruths, predictions, dataset)
