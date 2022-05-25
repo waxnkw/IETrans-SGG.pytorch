@@ -99,7 +99,16 @@ class InTransDataset(torch.utils.data.Dataset):
         rels = (1./rels) * np.median(vals)
         return rels
 
-    def get_statistics(self):
+    def get_statistics(self, no_matrix=False):
+        if no_matrix:
+            return {
+                'fg_matrix': None,
+                'pred_dist': None,
+                'obj_classes': self.ind_to_classes,
+                'rel_classes': self.ind_to_predicates,
+                'att_classes': self.ind_to_attributes,
+            }
+
         fg_matrix, bg_matrix = get_VG_statistics(img_dir=self.img_dir, roidb_file=self.roidb_file,
                                                  dict_file=self.dict_file,
                                                  image_file=self.image_file, must_overlap=True)
