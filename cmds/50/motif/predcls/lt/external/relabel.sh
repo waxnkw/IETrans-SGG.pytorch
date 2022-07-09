@@ -1,9 +1,9 @@
 OUTPATH=$EXP/50/motif/predcls/lt/external/relabel
 mkdir -p $OUTPATH
-cp $EXP/50/motif/predcls/sup/sup/last_checkpoint $OUTPATH/last_checkpoint
+cp /data_local/zhangao/exps_lt/50/predcls/sup/sup1/last_checkpoint $OUTPATH/last_checkpoint
 
-CUDA_VISIBLE_DEVICES=2,3 python -m torch.distributed.launch \
-  --master_port 10083 --nproc_per_node=2 \
+CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch \
+  --master_port 10081 --nproc_per_node=2 \
   tools/external_relabel.py --config-file "configs/wsup-50.yaml" \
   DATASETS.TRAIN \(\"50DS_VG_CCKB_train\",\) \
   MODEL.ROI_RELATION_HEAD.USE_GT_BOX True \

@@ -5,7 +5,7 @@ cp $EXP/50/gpsnet/predcls/sup/sup/last_checkpoint $OUTPATH/last_checkpoint
 CUDA_VISIBLE_DEVICES=2,3 python -m torch.distributed.launch \
   --master_port 10083 --nproc_per_node=2 \
   tools/external_relabel.py --config-file "configs/wsup-50.yaml" \
-  DATASETS.TRAIN \(\"50DS_VG_CCKB_train\",\) \
+  DATASETS.TRAIN \(\"50DS_VG_VGKB_train\",\) \
   MODEL.ROI_RELATION_HEAD.USE_GT_BOX True \
   MODEL.ROI_RELATION_HEAD.USE_GT_OBJECT_LABEL True \
   MODEL.ROI_RELATION_HEAD.PREDICTOR GPSNetPredictor \
@@ -18,7 +18,7 @@ CUDA_VISIBLE_DEVICES=2,3 python -m torch.distributed.launch \
   OUTPUT_DIR $OUTPATH  \
   MODEL.ROI_RELATION_HEAD.NUM_CLASSES 51 \
   SOLVER.PRE_VAL False \
-  WSUPERVISE.DATASET ExTransDataset  EM.MODE E  WSUPERVISE.SPECIFIED_DATA_FILE  datasets/vg/50/cc_clip_logits.pk
+  WSUPERVISE.DATASET ExTransDataset  EM.MODE E  WSUPERVISE.SPECIFIED_DATA_FILE  datasets/vg/50/vg_clip_logits.pk
 
 
 # cut top k% and merge with external information
