@@ -69,7 +69,6 @@ all_triplet_objs = np.asarray(all_triplet_objs)
 all_triplet_logits = torch.stack(all_triplet_logits, 0)
 print(len(all_triplet_rels), len(all_triplet_subs), len(all_triplet_objs), all_triplet_logits.size())
 assert len(all_triplet_rels) == len(all_triplet_subs) == len(all_triplet_objs) == len(all_triplet_logits)
-assert all_triplet_rels.max() < 50
 assert n == len(all_triplet_rels)
 assert len(all_triplet_idxs) == len(all_triplet_rels)
 all_changes = np.zeros_like(all_triplet_rels, dtype=np.float)
@@ -143,7 +142,6 @@ for triplet in tqdm(all_triplets):
 
     # get data from parents
     # collect all parent data
-    assert pred2idx[r] < 50
     idxs, logits = collect_all_parent_data(parents, (triplet[1], triplet[2]), pred2idx[r])
     _, sorted_idxs = logits.sort(descending=True)
     idxs = idxs[sorted_idxs.numpy()]
