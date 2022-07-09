@@ -166,7 +166,7 @@ class DecoderRNN(nn.Module):
             out_dists.append(pred_dist)
 
             if self.training:
-                labels_to_embed = labels[start_ind:end_ind].clone()
+                labels_to_embed = labels[start_ind:end_ind].clone().long()
                 # Whenever labels are 0 set input to be our max prediction
                 nonzero_pred = pred_dist[:, 1:].max(1)[1] + 1
                 is_bg = (labels_to_embed == 0).nonzero()
@@ -215,6 +215,10 @@ class LSTMContext(nn.Module):
         self.obj_classes = obj_classes
         self.rel_classes = rel_classes
         self.num_obj_classes = len(obj_classes)
+        self.obj_mapping = None
+        if self.num_obj_classes > 10000:
+            print(str("datasets/vg/1000/{}.pt".format(self.num_obj_classes)))
+            self.obj_mapping = torch.load(str("datasets/vg/1000/{}.pt".format(self.num_obj_classes)))
 
         # mode
         if self.cfg.MODEL.ROI_RELATION_HEAD.USE_GT_BOX:
@@ -363,8 +367,11 @@ class LSTMContext(nn.Module):
             obj_embed = self.obj_embed1(obj_labels.long())
         else:
             obj_logits = cat([proposal.get_field("predict_logits") for proposal in proposals], dim=0).detach()
-            obj_embed = F.softmax(obj_logits, dim=1) @ self.obj_embed1.weight
-        
+            if self.obj_mapping is not None:
+                obj_embed = F.softmax(obj_logits, dim=1) @ self.obj_embed1.weight[self.obj_mapping, :]
+            else:
+                obj_embed = F.softmax(obj_logits, dim=1) @ self.obj_embed1.weight
+
         assert proposals[0].mode == 'xyxy'
         pos_embed = self.pos_embed(encode_box_info(proposals))
 
