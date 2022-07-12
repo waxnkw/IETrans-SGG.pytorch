@@ -1,4 +1,4 @@
-OUTPATH=$EXP/50/sgcls/sup/sup
+OUTPATH=$EXP/50/motif/sgcls/sup/sup
 mkdir -p $OUTPATH
 
 #CUDA_LAUNCH_BLOCKING=1 
