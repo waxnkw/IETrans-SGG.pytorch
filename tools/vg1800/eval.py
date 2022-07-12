@@ -17,6 +17,7 @@ for gt in tqdm(gts):
     for r in rels:
         rel_stat[int(r)] = rel_stat.get(int(r), 0) + 1
 print(len(rel_stat))
+assert len(rel_stat) == 1807
 
 obj_stat = {}
 for gt in tqdm(gts):
