@@ -1,5 +1,5 @@
-OUTPATH=$EXP/50/motif/predcls/lt/combine/relabel
+OUTPATH="$EXP/1800/motif/predcls/lt/combine/relabel/$1"
 mkdir -p $OUTPATH
 cd $OUTPATH
-cp $SG/tools/ietrans/combine.py ./
-python combine.py motif
+cp $SG/tools/vg1800/combine.py ./
+python combine.py motif $1
