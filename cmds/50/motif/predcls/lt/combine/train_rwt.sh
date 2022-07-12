@@ -1,9 +1,9 @@
 OUTPATH=$EXP/50/motif/predcls/lt/combine/rwt
 mkdir -p $OUTPATH
-cp $EXP/50/motif/predcls/lt/combine/relabel/em_E.pk $OUTPATH/em_E.pk
+cp /data_local/zhangao/exps_lt/50/predcls/lt/combine/relabel/em_E.pk $OUTPATH/em_E.pk
 
-CUDA_VISIBLE_DEVICES=2,3 python -m torch.distributed.launch \
-  --master_port 10093 --nproc_per_node=2 \
+CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch \
+  --master_port 10091 --nproc_per_node=2 \
   tools/relation_train_net.py --config-file "configs/wsup-50.yaml" \
   DATASETS.TRAIN \(\"50DS_VG_VGKB_train\",\) \
   MODEL.ROI_RELATION_HEAD.USE_GT_BOX True \
