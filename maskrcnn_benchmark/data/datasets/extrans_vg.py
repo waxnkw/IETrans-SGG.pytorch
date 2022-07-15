@@ -161,20 +161,20 @@ class ExTransDataset(torch.utils.data.Dataset):
         target.add_field("attributes", torch.from_numpy(self.gt_attributes[index])[:len(box)])
         target.add_field("relation_pair_idxs", torch.from_numpy(cur_data['pairs']))
 
-        relation_map_tensor = torch.zeros((len(cur_data['pairs']), self.num_rel_classes), dtype=torch.float32)
-        relation_soft_labels = torch.zeros((len(cur_data['pairs']), self.num_rel_classes), dtype=torch.float32)
-        rel_logits = cur_data['rel_logits']
-        possible_rels = cur_data['possible_rels']
-        for i, (logit, ds_rels) in enumerate(zip(rel_logits, possible_rels)):
-            if logit is None:
-                logit = torch.tensor([1.])
-            else:
-                logit = (torch.from_numpy(logit).float().squeeze(0)).softmax(0)
-            relation_soft_labels[i, ds_rels] = logit
-            relation_map_tensor[i, ds_rels] = 1.
+        # relation_map_tensor = torch.zeros((len(cur_data['pairs']), self.num_rel_classes), dtype=torch.float32)
+        # relation_soft_labels = torch.zeros((len(cur_data['pairs']), self.num_rel_classes), dtype=torch.float32)
+        # rel_logits = cur_data['rel_logits']
+        # possible_rels = cur_data['possible_rels']
+        # for i, (logit, ds_rels) in enumerate(zip(rel_logits, possible_rels)):
+        #     if logit is None:
+        #         logit = torch.tensor([1.])
+        #     else:
+        #         logit = (torch.from_numpy(logit).float().squeeze(0)).softmax(0)
+        #     relation_soft_labels[i, ds_rels] = logit
+        #     relation_map_tensor[i, ds_rels] = 1.
         # target.add_field("relation_labels", relation_map_tensor)
         # target.add_field("relation_soft_labels", relation_soft_labels)
-        target.add_field("relation_labels", relation_soft_labels)
+        # target.add_field("relation_labels", relation_soft_labels)
         return target
 
     def __len__(self):
