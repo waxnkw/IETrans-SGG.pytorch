@@ -155,12 +155,13 @@ bash cmds/1000/motif/predcls.sh
 2. SGCLS
 
 ```sh
-bash cmds/1000/motif/predcls/lt/combine/train_0.1.sh # 0.1 indicates the internal transfer percentage (k_I)
+bash cmds/1000/motif/sgcls/lt/combine/train_0.1.sh # 0.1 indicates the internal transfer percentage (k_I)
 # or
-bash cmds/1000/motif/predcls/lt/combine/train_0.9.sh
+bash cmds/1000/motif/sgcls/lt/combine/train_0.9.sh
 ```
 
 3. Evaluation
+
 First go to the **OUTPUT_PATH** of your model.
 ```sh
 cd $OUTPUT_PATH/inference/1000VG_stanford_filtered_with_attribute_test
