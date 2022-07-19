@@ -11,6 +11,7 @@ Type | Link
 **I**-70%   | [link](https://thunlp.oss-cn-qingdao.aliyuncs.com/intrans-em_E.pk_topk_0.7) 
 **I**-30% + **E**-100%   | [link](https://thunlp.oss-cn-qingdao.aliyuncs.com/ietrans-em_E.pk_0.3) 
 **I**-70% + **E**-100%  | [link](https://thunlp.oss-cn-qingdao.aliyuncs.com/ietrans-em_E.pk_0.7) 
+
 The **I**-10% and 30% is much similar to the original dataset's predicate distribution.  
 
 ### Neural Motif
