@@ -9,4 +9,4 @@ bash cmds/1000/motif/predcls/lt/combine/combine.sh
 # train a new model
 #bash cmds/1000/motif/predcls/lt/combine/train.sh
 # train a new model using rwt
-bash cmds/1000/motif/predcls/lt/combine/train_rwt.sh
+bash cmds/1000/motif/predcls/lt/combine/train_0.9.sh
