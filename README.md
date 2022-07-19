@@ -4,7 +4,7 @@ This is the code for paper "[Fine-Grained Scene Graph Generation with Data Trans
 
 ## Recent Updates
 - [x] 2022.03.19 Initialize VG-50 code.
-
+- [x] 2022.07.19 Update VG-1800 code and dataset.
 
 ## Quick links
 
@@ -14,7 +14,9 @@ This is the code for paper "[Fine-Grained Scene Graph Generation with Data Trans
 * [Object Detector](#object-detector)
 * [IETrans](#ietrans)
     * [Preparation](#preparation)
-    * [Training](#training)
+    * [VG-50-Training](#vg-50-training)
+    * [VG-1800-Training](#vg-1800-training)
+* [Tips](#tips)
 * [Bugs or questions?](#bugs-or-questions)
 * [Acknowledgement](#acknowledgement)
 
@@ -91,7 +93,8 @@ export EXP=~/exps
 ```
 
 
-### Training
+### VG-50-Training
+For our pre-trained models and enhanced datasets, please refer to [MODEL_ZOO.md](MODEL_ZOO.md)
 
 1. PREDCLS
 
@@ -118,7 +121,15 @@ bash cmds/50/motif/predcls/lt/combine/train.sh
 bash cmds/50/motif/predcls/lt/combine/train_rwt.sh
 ```
 
+To evaluate a trained model.
+```sh
+bash cmds/50/motif/predcls/lt/combine/val.sh
+```
+Do not forget to specify the **OUTPUT_PATH** in **val.sh** as the path to the model directory you want to evaluate.
+
+
 Note that the `motif` can replaced with other models we provide (e.g. `gpsnet`, `vctree`, and `transformer`).
+
 
 2. SGCLS
 
@@ -131,6 +142,35 @@ bash cmds/50/motif/sgcls/lt/combine/train_rwt.sh
 ```sh
 bash cmds/50/motif/sgdet/lt/combine/train_rwt.sh
 ```
+
+### VG-1800-Training
+The overall training is similar with VG-50.
+
+1. PREDCLS
+
+```sh
+bash cmds/1000/motif/predcls.sh
+```
+
+2. SGCLS
+
+```sh
+bash cmds/1000/motif/predcls/lt/combine/train_0.1.sh # 0.1 indicates the internal transfer percentage (k_I)
+# or
+bash cmds/1000/motif/predcls/lt/combine/train_0.9.sh
+```
+
+3. Evaluation
+First go to the **OUTPUT_PATH** of your model.
+```sh
+cd $OUTPUT_PATH/inference/1000VG_stanford_filtered_with_attribute_test
+cp $SG/tools/vg1800/eval.py ./
+python eval.py # the script will output obj, predicate and rel accs.
+```
+
+## Tips
+Please refer to [TIPS](TIPS.md).
+
 
 ## Bugs or questions?
 If you have any questions related to the code or the paper, feel free to email Ao Zhang (`zhanga6@outlook.com`). If you encounter any problems when using the code, or want to report a bug, you can open an issue. Please try to specify the problem with details so we can help you better and quicker!
