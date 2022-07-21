@@ -173,7 +173,7 @@ python eval.py # the script will output obj, predicate and rel accs.
 ```
 
 ## Tips
-Please refer to [TIPS](TIPS.md).
+Some tips about this project. Please refer to [TIPS](TIPS.md).
 
 
 ## Bugs or questions?
