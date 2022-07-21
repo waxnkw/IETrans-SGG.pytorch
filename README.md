@@ -121,6 +121,8 @@ bash cmds/50/motif/predcls/lt/combine/train.sh
 bash cmds/50/motif/predcls/lt/combine/train_rwt.sh
 ```
 
+The key for rwt is `IETRANS.RWT True` and `WSUPERVISE.LOSS_TYPE  ce_rwt`.
+
 To evaluate a trained model.
 ```sh
 bash cmds/50/motif/predcls/lt/combine/val.sh
