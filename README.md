@@ -1,6 +1,6 @@
 # Internal and External Data Transfer (IETrans) for Scene Graph Generation
 
-This is the code for paper "[Fine-Grained Scene Graph Generation with Data Transfer](https://arxiv.org/abs/2203.11654)".
+This is the code for **ECCV 2022 (Oral)** paper "[Fine-Grained Scene Graph Generation with Data Transfer](https://arxiv.org/abs/2203.11654)".
 
 ## Recent Updates
 - [x] 2022.03.19 Initialize VG-50 code.
@@ -18,6 +18,7 @@ This is the code for paper "[Fine-Grained Scene Graph Generation with Data Trans
     * [VG-1800-Training](#vg-1800-training)
 * [Tips](#tips)
 * [Bugs or questions?](#bugs-or-questions)
+* [Citation](#citation)
 * [Acknowledgement](#acknowledgement)
 
 ## Overview
@@ -177,6 +178,18 @@ Please refer to [TIPS](TIPS.md).
 
 ## Bugs or questions?
 If you have any questions related to the code or the paper, feel free to email Ao Zhang (`zhanga6@outlook.com`). If you encounter any problems when using the code, or want to report a bug, you can open an issue. Please try to specify the problem with details so we can help you better and quicker!
+
+
+## Citation
+If you find this work helpful, please kindly consider citing our paper in your work.
+```
+@inproceedings{zhang2022fine,
+  title={Fine-Grained Scene Graph Generation with Data Transfer},
+  author={Zhang, Ao and Yao, Yuan and Chen, Qianyu and Ji, Wei and Liu, Zhiyuan and Sun, Maosong and Chua, Tat-Seng},
+  booktitle= "ECCV",
+  year={2022}
+}
+```
 
 
 ## Acknowledgement
