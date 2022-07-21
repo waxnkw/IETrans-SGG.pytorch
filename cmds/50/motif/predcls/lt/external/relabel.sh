@@ -1,6 +1,6 @@
 OUTPATH=$EXP/50/motif/predcls/lt/external/relabel
 mkdir -p $OUTPATH
-cp /data_local/zhangao/exps_lt/50/predcls/sup/sup1/last_checkpoint $OUTPATH/last_checkpoint
+cp $EXP/50/motif/predcls/sup/sup/last_checkpoint $OUTPATH/last_checkpoint
 
 CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch \
   --master_port 10081 --nproc_per_node=2 \

@@ -1,6 +1,6 @@
 OUTPATH=$EXP/50/motif/predcls/lt/combine/rwt
 mkdir -p $OUTPATH
-cp /data_local/zhangao/exps_lt/50/predcls/lt/combine/relabel/em_E.pk $OUTPATH/em_E.pk
+cp $EXP/50/motif/predcls/lt/combine/relabel/em_E.pk $OUTPATH/em_E.pk
 
 CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch \
   --master_port 10091 --nproc_per_node=2 \
