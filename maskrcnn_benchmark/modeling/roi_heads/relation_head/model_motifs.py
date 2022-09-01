@@ -383,7 +383,10 @@ class LSTMContext(nn.Module):
 
         boxes_per_cls = None
         if self.mode == 'sgdet' and not self.training:
-            boxes_per_cls = cat([proposal.get_field('boxes_per_cls') for proposal in proposals], dim=0) # comes from post process of box_head
+            if self.obj_mapping is not None:
+                boxes_per_cls =None
+            else:
+                boxes_per_cls = cat([proposal.get_field('boxes_per_cls') for proposal in proposals], dim=0) # comes from post process of box_head
 
         # object level contextual feature
         obj_dists, obj_preds, obj_ctx, perm, inv_perm, ls_transposed = self.obj_ctx(obj_pre_rep, proposals, obj_labels, boxes_per_cls, ctx_average=ctx_average)

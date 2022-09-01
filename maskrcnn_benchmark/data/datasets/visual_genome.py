@@ -76,7 +76,7 @@ class VGDataset(torch.utils.data.Dataset):
             target = torch.LongTensor([-1])
             if self.transforms is not None:
                 img, target = self.transforms(img, target)
-            return img, target, index
+            return img, target, self.custom_files[index]
         
         img = Image.open(self.filenames[index]).convert("RGB")
         if img.size[0] != self.img_info[index]['width'] or img.size[1] != self.img_info[index]['height']:

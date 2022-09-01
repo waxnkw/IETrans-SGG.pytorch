@@ -76,9 +76,14 @@ class PostProcessor(nn.Module):
                 obj_pred = obj_pred + 1
             else:
                 # NOTE: by kaihua, apply late nms for object prediction
-                obj_pred = obj_prediction_nms(box.get_field('boxes_per_cls'), obj_logit, self.later_nms_pred_thres)
-                obj_score_ind = torch.arange(num_obj_bbox, device=obj_logit.device) * num_obj_class + obj_pred
-                obj_scores = obj_class_prob.view(-1)[obj_score_ind]
+                if box.get_field('boxes_per_cls').size(1) != obj_logit.size(1):
+                    obj_scores, obj_pred = obj_class_prob[:, 1:].max(dim=1)
+                    obj_pred = obj_pred + 1
+                else:
+                    obj_pred = obj_prediction_nms(box.get_field('boxes_per_cls'), obj_logit, self.later_nms_pred_thres)
+                    obj_score_ind = torch.arange(num_obj_bbox, device=obj_logit.device) * num_obj_class + obj_pred
+                    obj_scores = obj_class_prob.view(-1)[obj_score_ind]
+
             
             assert obj_scores.shape[0] == num_obj_bbox
             obj_class = obj_pred
@@ -86,12 +91,15 @@ class PostProcessor(nn.Module):
             if self.use_gt_box:
                 boxlist = box
             else:
-                # mode==sgdet
-                # apply regression based on finetuned object class
-                device = obj_class.device
-                batch_size = obj_class.shape[0]
-                regressed_box_idxs = obj_class
-                boxlist = BoxList(box.get_field('boxes_per_cls')[torch.arange(batch_size, device=device), regressed_box_idxs], box.size, 'xyxy')
+                if box.get_field('boxes_per_cls').size(1) != obj_logit.size(1):
+                    boxlist = box
+                else:
+                    # mode==sgdet
+                    # apply regression based on finetuned object class
+                    device = obj_class.device
+                    batch_size = obj_class.shape[0]
+                    regressed_box_idxs = obj_class
+                    boxlist = BoxList(box.get_field('boxes_per_cls')[torch.arange(batch_size, device=device), regressed_box_idxs], box.size, 'xyxy')
             boxlist.add_field('pred_labels', obj_class) # (#obj, )
             boxlist.add_field('pred_scores', obj_scores) # (#obj, )
 
