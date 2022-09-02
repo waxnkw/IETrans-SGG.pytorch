@@ -164,7 +164,6 @@ def inference(
 def custom_sgg_post_precessing(image_ids, predictions):
     output_dict = {}
     for idx, boxlist in zip(image_ids, predictions):
-        print(boxlist.fields())
         xyxy_bbox = boxlist.convert('xyxy').bbox
         # current sgg info
         current_dict = {}
