@@ -770,6 +770,7 @@ _C.TEST.ALLOW_LOAD_FROM_CACHE = True
 
 _C.TEST.CUSTUM_EVAL = False
 _C.TEST.CUSTUM_PATH = '.'
+_C.TEST.CUSTUM_BBOX_PATH = ''
 
 # ---------------------------------------------------------------------------- #
 # Misc options
