@@ -20,3 +20,14 @@ Task | Link
 PREDCLS   | [link](https://drive.google.com/file/d/10dMDvHPk8WmOaBL0I1LT9FwnM1COYviS/view?usp=sharing) 
 SGCLS   | [link](https://drive.google.com/file/d/1Myb_JR9bm32PUNEPyVypWIpTPqCrS_uS/view?usp=sharing) 
 SGDET   | [link](https://drive.google.com/file/d/16Rv0VwN4pg3h_LidB_zFPcdefAKiXfs7/view?usp=sharing) 
+
+### Transformer
+Task | Link 
+-- | -- 
+SGDET   | [link](https://thunlp.oss-cn-qingdao.aliyuncs.com/ietrans/transformer_sgdet_I70_E100.pth) 
+
+## VG-1800
+### Neural Motif
+Task | Link 
+-- | -- 
+SGCLS **I**-90% + **E**-100%   | [link](https://thunlp.oss-cn-qingdao.aliyuncs.com/ietrans/vg1800_motif_sgcls_I90_E100.pth) 

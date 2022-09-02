@@ -16,6 +16,7 @@ This is the code for **ECCV 2022 (Oral)** paper "[Fine-Grained Scene Graph Gener
     * [Preparation](#preparation)
     * [VG-50-Training](#vg-50-training)
     * [VG-1800-Training](#vg-1800-training)
+* [Demo](#demo)
 * [Tips](#tips)
 * [Bugs or questions?](#bugs-or-questions)
 * [Citation](#citation)
@@ -171,6 +172,10 @@ cd $OUTPUT_PATH/inference/1000VG_stanford_filtered_with_attribute_test
 cp $SG/tools/vg1800/eval.py ./
 python eval.py # the script will output obj, predicate and rel accs.
 ```
+
+## Demo
+Please refer to [DEMO.md](DEMO.md) for more details.
+
 
 ## Tips
 Some tips about this project. Please refer to [TIPS](TIPS.md).
