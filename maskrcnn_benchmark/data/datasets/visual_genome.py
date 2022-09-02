@@ -8,7 +8,7 @@ import numpy as np
 from collections import defaultdict
 from tqdm import tqdm
 import random
-
+import pickle
 from maskrcnn_benchmark.structures.bounding_box import BoxList
 from maskrcnn_benchmark.structures.boxlist_ops import boxlist_iou
 
@@ -18,7 +18,8 @@ class VGDataset(torch.utils.data.Dataset):
 
     def __init__(self, split, img_dir, roidb_file, dict_file, image_file, transforms=None,
                 filter_empty_rels=True, num_im=-1, num_val_im=5000,
-                filter_duplicate_rels=True, filter_non_overlap=True, flip_aug=False, custom_eval=False, custom_path=''):
+                filter_duplicate_rels=True, filter_non_overlap=True, flip_aug=False, custom_eval=False, custom_path='',
+                 custom_bbox_path=''):
         """
         Torch dataset for VisualGenome
         Parameters:
@@ -53,8 +54,11 @@ class VGDataset(torch.utils.data.Dataset):
         self.categories = {i : self.ind_to_classes[i] for i in range(len(self.ind_to_classes))}
 
         self.custom_eval = custom_eval
+        self.custom_bboxes = None
         if self.custom_eval:
             self.get_custom_imgs(custom_path)
+            if os.path.isfile(custom_bbox_path):
+                self.custom_bboxes = pickle.load(open(custom_bbox_path, "rb"))
         else:
             self.split_mask, self.gt_boxes, self.gt_classes, self.gt_attributes, self.relationships = load_graphs(
                 self.roidb_file, self.split, num_im, num_val_im=num_val_im,
@@ -73,7 +77,10 @@ class VGDataset(torch.utils.data.Dataset):
         #        index = int(random.random() * len(self.filenames))
         if self.custom_eval:
             img = Image.open(self.custom_files[index]).convert("RGB")
-            target = torch.LongTensor([-1])
+            if self.custom_bboxes is not None:
+                target = self.custom_groundtruth(index)
+            else:
+                target = torch.LongTensor([-1])
             if self.transforms is not None:
                 img, target = self.transforms(img, target)
             return img, target, self.custom_files[index]
@@ -139,6 +146,16 @@ class VGDataset(torch.utils.data.Dataset):
 
         # correct_img_info(self.img_dir, self.image_file)
         return self.img_info[index]
+
+    def custom_groundtruth(self, index):
+        img_info = self.get_img_info(index)
+        w, h = img_info['width'], img_info['height']
+        box = self.custom_bboxes[os.path.basename(self.custom_files[index])][0] #/ BOX_SCALE * max(w, h)
+        box = torch.from_numpy(box).reshape(-1, 4)  # guard against no boxes
+        target = BoxList(box, (w, h), 'xyxy')  # xyxy
+        target.add_field("labels", torch.zeros(len(box)))
+        target.add_field("attributes", torch.zeros(len(box)))
+        return target
 
     def get_groundtruth(self, index, evaluation=False, flip_img=False):
         img_info = self.get_img_info(index)

@@ -203,6 +203,7 @@ class DatasetCatalog(object):
             args['flip_aug'] = cfg.MODEL.FLIP_AUG
             args['custom_eval'] = cfg.TEST.CUSTUM_EVAL
             args['custom_path'] = cfg.TEST.CUSTUM_PATH
+            args['custom_bbox_path'] = cfg.TEST.CUSTUM_BBOX_PATH
             if ("DS" in name):
                 if cfg.WSUPERVISE.SPECIFIED_DATA_FILE is not None:
                     args['specified_data_file'] = cfg.WSUPERVISE.SPECIFIED_DATA_FILE

@@ -67,7 +67,7 @@ def _accumulate_predictions_from_multiple_gpus(predictions_per_gpu, synchronize_
     
     # convert a dict where the key is the index in a list
     image_ids = list(sorted(predictions.keys()))
-    if len(image_ids) != image_ids[-1] + 1:
+    if type(image_ids[-1]) is int and len(image_ids) != image_ids[-1] + 1:
         logger = logging.getLogger("maskrcnn_benchmark.inference")
         logger.warning(
             "WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!"
@@ -77,7 +77,7 @@ def _accumulate_predictions_from_multiple_gpus(predictions_per_gpu, synchronize_
 
     # convert to a list
     predictions = [predictions[i] for i in image_ids]
-    return predictions
+    return image_ids, predictions
 
 
 def inference(
@@ -127,7 +127,7 @@ def inference(
     )
 
     if not load_prediction_from_cache:
-        predictions = _accumulate_predictions_from_multiple_gpus(predictions, synchronize_gather=cfg.TEST.RELATION.SYNC_GATHER)
+        image_ids, predictions = _accumulate_predictions_from_multiple_gpus(predictions, synchronize_gather=cfg.TEST.RELATION.SYNC_GATHER)
 
     if not is_main_process():
         return -1.0
@@ -143,10 +143,13 @@ def inference(
     )
 
     if cfg.TEST.CUSTUM_EVAL:
-        detected_sgg = custom_sgg_post_precessing(predictions)
-        with open(os.path.join(cfg.DETECTED_SGG_DIR, 'custom_prediction.json'), 'w') as outfile:  
-            json.dump(detected_sgg, outfile)
-        print('=====> ' + str(os.path.join(cfg.DETECTED_SGG_DIR, 'custom_prediction.json')) + ' SAVED !')
+        detected_sgg = custom_sgg_post_precessing(image_ids, predictions)
+        # with open(os.path.join(cfg.DETECTED_SGG_DIR, 'custom_prediction.json'), 'w') as outfile:
+        #     json.dump(detected_sgg, outfile)
+        import pickle
+        with open(os.path.join(cfg.DETECTED_SGG_DIR, 'custom_prediction.pk'), 'wb') as outfile:
+            pickle.dump(detected_sgg, outfile)
+        print('=====> ' + str(os.path.join(cfg.DETECTED_SGG_DIR, 'custom_prediction.pk')) + ' SAVED !')
         return -1.0
 
     return evaluate(cfg=cfg,
@@ -158,9 +161,10 @@ def inference(
 
 
 
-def custom_sgg_post_precessing(predictions):
+def custom_sgg_post_precessing(image_ids, predictions):
     output_dict = {}
-    for idx, boxlist in enumerate(predictions):
+    for idx, boxlist in zip(image_ids, predictions):
+        print(boxlist.fields())
         xyxy_bbox = boxlist.convert('xyxy').bbox
         # current sgg info
         current_dict = {}
@@ -170,13 +174,16 @@ def custom_sgg_post_precessing(predictions):
         bbox = []
         bbox_labels = []
         bbox_scores = []
+        # bbox = xyxy_bbox
+        # bbox_labels = boxlist.get_field('pred_labels')
+        # bbox_scores = boxlist.get_field('pred_scores')
         for i in sortedid:
             bbox.append(xyxy_bbox[i].tolist())
             bbox_labels.append(boxlist.get_field('pred_labels')[i].item())
             bbox_scores.append(boxlist.get_field('pred_scores')[i].item())
-        current_dict['bbox'] = bbox
-        current_dict['bbox_labels'] = bbox_labels
-        current_dict['bbox_scores'] = bbox_scores
+        current_dict['bbox'] = torch.tensor(bbox)
+        current_dict['bbox_labels'] = torch.tensor(bbox_labels)
+        current_dict['bbox_scores'] = torch.tensor(bbox_scores)
         # sorted relationships
         rel_sortedid, _ = get_sorted_bbox_mapping(boxlist.get_field('pred_rel_scores')[:,1:].max(1)[0].tolist())
         # sorted rel
@@ -184,16 +191,21 @@ def custom_sgg_post_precessing(predictions):
         rel_labels = []
         rel_scores = []
         rel_all_scores = []
+        # rel_labels = boxlist.get_field('pred_rel_scores')[:, 1:].max(1)[1] + 1
+        # rel_scores = boxlist.get_field('pred_rel_scores')[:, 1:].max(1)[0]
+        # rel_all_scores = boxlist.get_field('pred_rel_scores')
+        # id2sorted = torch.tensor(id2sorted, dtype=torch.int32)
+        # rel_pairs = [id2sorted[boxlist.get_field('rel_pair_idxs')[:, 0]], id2sorted[boxlist.get_field('rel_pair_idxs')[:, 1]]]
         for i in rel_sortedid:
             rel_labels.append(boxlist.get_field('pred_rel_scores')[i][1:].max(0)[1].item() + 1)
             rel_scores.append(boxlist.get_field('pred_rel_scores')[i][1:].max(0)[0].item())
             rel_all_scores.append(boxlist.get_field('pred_rel_scores')[i].tolist())
             old_pair = boxlist.get_field('rel_pair_idxs')[i].tolist()
             rel_pairs.append([id2sorted[old_pair[0]], id2sorted[old_pair[1]]])
-        current_dict['rel_pairs'] = rel_pairs
-        current_dict['rel_labels'] = rel_labels
-        current_dict['rel_scores'] = rel_scores
-        current_dict['rel_all_scores'] = rel_all_scores
+        current_dict['rel_pairs'] = torch.tensor(rel_pairs)
+        current_dict['rel_labels'] = torch.tensor(rel_labels)
+        current_dict['rel_scores'] = torch.tensor(rel_scores)
+        # current_dict['rel_all_scores'] = torch.tensor(rel_all_scores)
         output_dict[idx] = current_dict
     return output_dict
     
