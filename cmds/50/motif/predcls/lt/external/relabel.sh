@@ -18,7 +18,7 @@ CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch \
   OUTPUT_DIR $OUTPATH  \
   MODEL.ROI_RELATION_HEAD.NUM_CLASSES 51 \
   SOLVER.PRE_VAL False \
-  WSUPERVISE.DATASET ExTransDataset  EM.MODE E  WSUPERVISE.SPECIFIED_DATA_FILE  datasets/vg/50/cc_clip_logits.pk
+  WSUPERVISE.DATASET ExTransDataset  EM.MODE E  WSUPERVISE.SPECIFIED_DATA_FILE  datasets/vg/50/vg_clip_logits.pk
 
 
 # cut top k% and merge with external information
