@@ -5,7 +5,7 @@ cp $EXP/50/motif/predcls/sup/sup/last_checkpoint $OUTPATH/last_checkpoint
 CUDA_VISIBLE_DEVICES=0,1 python -m torch.distributed.launch \
   --master_port 10081 --nproc_per_node=2 \
   tools/external_relabel.py --config-file "configs/wsup-50.yaml" \
-  DATASETS.TRAIN \(\"50DS_VG_CCKB_train\",\) \
+  DATASETS.TRAIN \(\"50DS_VG_VGKB_train\",\) \
   MODEL.ROI_RELATION_HEAD.USE_GT_BOX True \
   MODEL.ROI_RELATION_HEAD.USE_GT_OBJECT_LABEL True \
   MODEL.ROI_RELATION_HEAD.PREDICTOR MotifPredictor \
