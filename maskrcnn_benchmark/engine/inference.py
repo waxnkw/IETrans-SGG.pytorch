@@ -55,7 +55,7 @@ def _accumulate_predictions_from_multiple_gpus(predictions_per_gpu, synchronize_
     if not synchronize_gather:
         all_predictions = all_gather(predictions_per_gpu)
     if not is_main_process():
-        return
+        return None, None
 
     if synchronize_gather:
         predictions = predictions_per_gpu
