@@ -1,10 +1,12 @@
 # Internal and External Data Transfer (IETrans) for Scene Graph Generation
 
 This is the code for **ECCV 2022 (Oral)** paper "[Fine-Grained Scene Graph Generation with Data Transfer](https://arxiv.org/abs/2203.11654)".
+Our paper get (1, 1, 2) from reviewers which is near to full marks (1, 1, 1).
 
 ## Recent Updates
 - [x] 2022.03.19 Initialize VG-50 code.
 - [x] 2022.07.19 Update VG-1800 code and dataset.
+- [x] 2022.03.19 Add demo at [DEMO.md](DEMO.md).
 
 ## Quick links
 
@@ -174,6 +176,7 @@ python eval.py # the script will output obj, predicate and rel accs.
 ```
 
 ## Demo
+![alt text](demo/demo.png "Demo of IETrans for VG1800")
 Please refer to [DEMO.md](DEMO.md) for more details.
 
 
