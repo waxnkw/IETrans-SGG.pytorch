@@ -22,7 +22,7 @@ class ExTransDataset(torch.utils.data.Dataset):
     def __init__(self, split, img_dir, roidb_file, dict_file, image_file, transforms=None,
                  filter_empty_rels=True, num_im=-1, num_val_im=5000,
                  filter_duplicate_rels=True, filter_non_overlap=True, flip_aug=False, custom_eval=False,
-                 custom_path='', distant_supervsion_file=None, specified_data_file=None):
+                 custom_path='', distant_supervsion_file=None, specified_data_file=None, custom_bbox_path=''):
         """
         The dataset to conduct external transfer
         Parameters:
